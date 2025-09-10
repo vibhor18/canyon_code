@@ -1,0 +1,13 @@
+# venv and Python cache
+.venv/
+__pycache__/
+*.pyc
+
+# Editor and OS
+.vscode/
+.DS_Store
+
+# Local configs
+.cursor/
+.mcp/
+.env

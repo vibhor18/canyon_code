@@ -1,0 +1,8 @@
+[project]
+name = "canyoncode_agent"
+version = "0.0.1"
+dependencies = ["pandas", "pydantic", "fastapi", "uvicorn", "jsonschema"]
+
+[build-system]
+requires = ["setuptools", "wheel"]
+build-backend = "setuptools.build_meta"
