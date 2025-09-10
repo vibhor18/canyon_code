@@ -7,7 +7,7 @@ from datastore import query
 import pandas as pd
 
 
-# Point this at your actual folder with the data files
+
 DATA_DIR = "."
 
 def main():
