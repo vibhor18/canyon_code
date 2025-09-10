@@ -22,7 +22,7 @@ Built with:
 
 ## Project layout
 
-\`\`\`text
+~~~text
 canyoncode_agent_step1_scaffold/
 ├─ app/
 │  ├─ graph.py               # LangGraph plan
@@ -46,7 +46,7 @@ canyoncode_agent_step1_scaffold/
 ├─ decoder_params.json
 ├─ Table_defs_v2.csv
 └─ Table_feeds_v2.csv
-\`\`\`
+~~~
 
 ---
 
@@ -55,18 +55,18 @@ canyoncode_agent_step1_scaffold/
 ### 1) Environment
 
 macOS or Linux:
-\`\`\`bash
+~~~bash
 python -m venv .venv
 source .venv/bin/activate
 pip install -r requirements.txt
-\`\`\`
+~~~
 
 
 ### 2) Smoke test
 
-\`\`\`bash
+~~~bash
 python scripts/smoke_test.py
-\`\`\`
+~~~
 
 Expected:
 - Loaded feeds rows: 100
@@ -75,20 +75,20 @@ Expected:
 
 ### 3) Tool sanity test
 
-\`\`\`bash
+~~~bash
 python scripts/tool_smoke.py
-\`\`\`
+~~~
 
 ### 4) Run the API
 
-\`\`\`bash
+~~~bash
 uvicorn app.main:app --reload
-\`\`\`
+~~~
 
 Health:
-\`\`\`bash
+~~~bash
 curl -s http://127.0.0.1:8000/health
-\`\`\`
+~~~
 
 ---
 
@@ -97,34 +97,34 @@ curl -s http://127.0.0.1:8000/health
 Run these in a second terminal while the server is running.
 
 1) Ranking with clarity
-\`\`\`bash
+~~~bash
 curl -s -X POST http://127.0.0.1:8000/query -H "Content-Type: application/json" \
   -d '{"question":"Top 5 feeds with best clarity in PAC"}' | jq
-\`\`\`
+~~~
 
 2) Filtered listing
-\`\`\`bash
+~~~bash
 curl -s -X POST http://127.0.0.1:8000/query -H "Content-Type: application/json" \
   -d '{"question":"List feeds at least 1080p and 30 fps using H265 in EUR"}' | jq
-\`\`\`
+~~~
 
 3) Parameters introspection
-\`\`\`bash
+~~~bash
 curl -s -X POST http://127.0.0.1:8000/query -H "Content-Type: application/json" \
   -d '{"question":"Show decoder parameters"}' | jq
-\`\`\`
+~~~
 
 4) Constraint check
-\`\`\`bash
+~~~bash
 curl -s -X POST http://127.0.0.1:8000/query -H "Content-Type: application/json" \
   -d '{"question":"Check top feeds in PAC for constraints"}' | jq
-\`\`\`
+~~~
 
 Optional smoothness demo:
-\`\`\`bash
+~~~bash
 curl -s -X POST http://127.0.0.1:8000/query -H "Content-Type: application/json" \
   -d '{"question":"Top 5 feeds with smooth video in CONUS"}' | jq
-\`\`\`
+~~~
 
 ---
 
@@ -133,12 +133,12 @@ curl -s -X POST http://127.0.0.1:8000/query -H "Content-Type: application/json" 
 - POST /query
 
 Request:
-\`\`\`json
+~~~json
 {"question":"Top 5 feeds with best clarity in PAC"}
-\`\`\`
+~~~
 
 Response:
-\`\`\`json
+~~~json
 {
   "answer": "Top feeds by clarity matching {...}\n- FD-... | ...",
   "evidence": {
@@ -148,7 +148,7 @@ Response:
     "scores": [{"feed_id":"FD-...","score":1.0}]
   }
 }
-\`\`\`
+~~~
 
 - GET /health returns {"status":"ok"}
 
@@ -158,63 +158,53 @@ Response:
 
 Use tools inside Cursor via MCP.
 
-### project config file
+### Option 1: project config file
 
-Create \`.cursor/mcp.json\` in the repo root with paths:
+Create `.cursor/mcp.json` in the repo root with paths:
 
-\`\`\`json
+~~~json
 {
   "mcpServers": {
     "canyoncode-tools": {
-      "command": "$PY",
+      "command": ".venv/bin/python",
       "args": ["-m", "tools_mcp.mcp_server"],
-      "cwd": "$PROJ"
+      "cwd": "."
     }
   }
 }
-\`\`\`
-
-Restart Cursor. In the MCP Tools panel you should see:
-- get_table_schema_tool
-- list_feeds_tool
-- filter_and_rank_tool
-- get_encoder_params_tool
-- get_decoder_params_tool
-- summarize_selection_tool
-- explain_term_tool
-- sanity_check_constraints_tool
+~~~
 
 Example tool inputs in Cursor chat:
-\`\`\`json
+~~~json
 {"theater":"PAC","limit":3}
-\`\`\`
+~~~
 
-\`\`\`json
+~~~json
 {"theater":"EUR","top_k":5}
-\`\`\`
+~~~
 
-\`\`\`json
+~~~json
 {}
-\`\`\`
+~~~
 
-\`\`\`json
+~~~json
 {"phrase":"best clarity"}
-\`\`\`
+~~~
 
-\`\`\`json
+~~~json
 {"feed_ids":["FD-LLF3SB","FD-8D150S"]}
-\`\`\`
+~~~
 
 ---
 
 ## Tests
 
-Minimal pytest examples in \`tests/test_basic.py\`:
+Minimal pytest examples in `tests/test_basic.py`:
 
-\`\`\`bash
+~~~bash
 pip install pytest
 pytest -q
-\`\`\`
+~~~
 
 ---
 
@@ -238,5 +228,4 @@ pytest -q
 - Latency mapping is a placeholder weight shift
 
 ---
-
 
